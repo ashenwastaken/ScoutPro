@@ -33,6 +33,22 @@ export default function PlayersTable({ players, setMessage, setIsLoading }) {
     };
   }, [editPlayer.images, editPlayer]);
 
+  const handleDeletePlayer = (playerId) => {
+    if (window.confirm('Are you sure you want to delete this player?')) {
+      fetch(`/api/players/${playerId}`, {
+        method: 'DELETE',
+      })
+        .then(() => {
+          setPlayers(players.filter((player) => player.id !== playerId));
+          alert('Player deleted successfully');
+        })
+        .catch((error) => {
+          console.error('Error deleting player:', error);
+          alert('Error deleting player');
+        });
+    }
+  };
+  
   const handleDeleteImage = (index) => {
     const updatedImages = [...editPlayer.images];
     updatedImages.splice(index, 1);
